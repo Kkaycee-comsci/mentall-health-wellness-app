@@ -1,85 +1,73 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div id="app-wrapper">
+    <NavBar />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <main class="main-container">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <AppFooter />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script>
+import NavBar from './components/NavBar.vue'
+import AppFooter from './components/AppFooter.vue'
+
+export default {
+  name: 'App',
+  components: {
+    NavBar,
+    AppFooter,
+  },
+}
+</script>
+
+<style>
+/* Global Design & Background */
+:root {
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --accent-color: #42b983;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+#app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.main-container {
+  flex: 1;
+  width: 95%;
+  max-width: 1000px;
+  margin: 2rem auto;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+/* Page Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
